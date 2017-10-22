@@ -45,3 +45,4 @@ check "ths hs n vwls" "Enter input: output: thsay hsay nay vwlsay"
 check "A" "Enter input: output: AAY"
 check "a" "Enter input: output: aay"
 
+rm convert_pig_latin
