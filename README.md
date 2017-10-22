@@ -1,10 +1,12 @@
 # Pig Latin Unit Tests
 
 ## Installation
-Clone into a directory
+Clone into a directory of you choice.
+
 `git clone https://github.com/bnelo12/Pig-Latin-Unit-Tester.git`
 
-Set the correct pahts to your source files and to MARS.
+Set the correct paths relative to the test file to your source files and to MARS.
+
 ```
 export PATH_MARS=/PATH_TO/Mars.java  
 export PATH_CONVERT_PIG_LATIN_C=/PATH/TO/convert_pig_latin.c  
@@ -12,7 +14,8 @@ export PATH_CONVERT_PIG_LATIN_S=/PATH/TO/convert_pig_latin.s
 ```
 
 ## Use
-Simply run  
+Simply run:
+
 `./test_convert_pig_latin`
 
 ## Tests
