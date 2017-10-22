@@ -44,5 +44,6 @@ check "" "input: output:"
 check "ths hs n vwls" "input: output: thsay hsay nay vwlsay"
 check "A" "input: output: AAY"
 check "a" "input: output: aay"
+check "Aye-aye captain, Say SIMPLE thanks! ty." "input: output: Aye-ayeay aptaincay, Aysay IMPLESAY anksthay! tyay."
 
 rm convert_pig_latin
