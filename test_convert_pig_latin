@@ -1,0 +1,47 @@
+#!/bin/bash
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+gcc $PATH_CONVERT_PIG_LATIN_C -o convert_pig_latin
+if [ "$?" -ne 0 ]; then
+    exit 1;
+fi
+
+function check {
+    echo -e "Testing Input: $1"
+
+    local s1=$(echo -e $(echo -e "$1" | ./convert_pig_latin))
+    if [ "$s1" == "$2" ]
+    then 
+        echo -e "\t${GREEN}Success${NC}: C program passed."
+    else
+        echo -e "\t${RED}FAIL${NC}: C program failed."
+        echo -e "${RED}$(diff <(echo -e $s1) <(echo -e $2))${NC}" | sed -e 's/^/                /'
+    fi
+
+    local s2=$(echo -e $(echo -e "$1" | java -jar $PATH_MARS nc sm $PATH_CONVERT_PIG_LATIN_S))
+    if [ "$s2" == "$2" ]
+    then 
+        echo -e "\t${GREEN}Success${NC}: MIPS program passed."
+    else
+        echo -e "\t${RED}FAIL${NC}: MIPS program failed."
+        echo -e "${RED}$(diff <(echo -e $s2) <(echo -e $2))${NC}" | sed -e 's/^/                /'
+    fi
+    echo ""
+}
+
+check "Testing test test!" "Enter input: output: Estingtay esttay esttay!"
+check "...!!!..." "Enter input: output: ...!!!..."
+check ".. HELLO .. allo .. a .." "Enter input: output: .. ELLOHAY .. alloay .. aay .."
+check "A..capital..Letter" "Enter input: output: AAY..apitalcay..Etterlay"
+check "THESE-WORDS Have-hyphens..and..-Punctu-ation" "Enter input: output: ESE-WORDSTHAY Ave-hyphenshay..anday..-Unctu-ationpay"
+check "Hello-" "Enter input: output: Ellohay-"
+check "COMPOUND-WORDS" "Enter input: output: OMPOUND-WORDSCAY"
+check "simple" "Enter input: output: implesay"
+check "" "Enter input: output:"
+check "ths hs n vwls" "Enter input: output: thsay hsay nay vwlsay"
+check "A" "Enter input: output: AAY"
+check "a" "Enter input: output: aay"
+
