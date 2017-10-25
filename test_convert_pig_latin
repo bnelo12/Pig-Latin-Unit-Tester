@@ -52,7 +52,7 @@ function check {
     fi
 
     if [ $USE_MARS -eq 1 ]; then
-        local s2=$(echo -e $(echo -e "$1" | java -Dapple.awt.UIElement=true -jar $PATH_MARS nc sm $PATH_CONVERT_PIG_LATIN_S))
+        local s2=$(echo -e $(echo -e "$1" | DISPLAY="" java -Dapple.awt.UIElement=true -jar $PATH_MARS nc sm $PATH_CONVERT_PIG_LATIN_S))
         if [ "$s2" == "$2" ]
         then
             echo -e "\t${GREEN}Success${NC}: MIPS program passed."
