@@ -1,22 +1,16 @@
 # Pig Latin Unit Tests
 
 ## Installation
-Clone into a directory of you choice.
+Clone into a directory of your choice.
 
 `git clone https://github.com/bnelo12/Pig-Latin-Unit-Tester.git`
-
-Set the correct paths relative to the test file to your source files and to MARS.
-
-```
-$ export PATH_MARS=/PATH/TO/Mars.jar  
-$ export PATH_CONVERT_PIG_LATIN_C=/PATH/TO/convert_pig_latin.c  
-$ export PATH_CONVERT_PIG_LATIN_S=/PATH/TO/convert_pig_latin.s  
-```
 
 ## Use
 Simply run:
 
-`./test_convert_pig_latin`
+`./test_convert_pig_latin /PATH/TO/convert_pig_latin.c /PATH/TO/convert_pig_latin.s /PATH/TO/Mars.jar`
+
+You can omit the last two arguments if you just want to test your C code.
 
 ## Tests
 This will test your C code and MIPS to a series of inputs as follows:

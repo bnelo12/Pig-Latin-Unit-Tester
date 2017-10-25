@@ -4,9 +4,36 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+if [ $# -eq 0 ] || [ $# -gt 3 ]; then
+    echo "Your command line contains 0 arguments. The first argument should be the path to your C file."
+    echo "If you want to test your MIPS code too, please provide your ASM file as the secondary argument, and the path to MARS as your third argument."
+    exit 1
+fi
+
+if [ $# -eq 2 ]; then
+    echo "If you want to test your MIPS code, please provide your ASM file as the secondary argument, and the path to MARS as your third argument."
+    exit 1
+fi
+
+PATH_CONVERT_PIG_LATIN_C="$1"
+PATH_CONVERT_PIG_LATIN_S="$2"
+PATH_MARS="$3"
+
+if ! [ -f "$PATH_CONVERT_PIG_LATIN_C" ]; then
+    echo "Could not find C file: $PATH_CONVERT_PIG_LATIN_C"
+    exit 1
+fi
+
 gcc $PATH_CONVERT_PIG_LATIN_C -o convert_pig_latin
 if [ "$?" -ne 0 ]; then
-    exit 1;
+    exit 1
+fi
+
+USE_MARS=0
+if [ -f "$PATH_MARS" ] && [ -f "$PATH_CONVERT_PIG_LATIN_S" ]; then
+    USE_MARS=1;
+else
+    echo -e "${RED}Could not find MARS or the piglatin assembler source. Running without testing MARS.${NC}\n"
 fi
 
 function check {
@@ -21,13 +48,15 @@ function check {
         echo -e "${RED}$(diff <(echo -e $s1) <(echo -e $2))${NC}" | sed -e 's/^/                /'
     fi
 
-    local s2=$(echo -e $(echo -e "$1" | java -jar $PATH_MARS nc sm $PATH_CONVERT_PIG_LATIN_S))
-    if [ "$s2" == "$2" ]
-    then 
-        echo -e "\t${GREEN}Success${NC}: MIPS program passed."
-    else
-        echo -e "\t${RED}FAIL${NC}: MIPS program failed."
-        echo -e "${RED}$(diff <(echo -e $s2) <(echo -e $2))${NC}" | sed -e 's/^/                /'
+    if [ $USE_MARS -eq 1 ]; then
+        local s2=$(echo -e $(echo -e "$1" | java -jar $PATH_MARS nc sm $PATH_CONVERT_PIG_LATIN_S))
+        if [ "$s2" == "$2" ]
+        then
+            echo -e "\t${GREEN}Success${NC}: MIPS program passed."
+        else
+            echo -e "\t${RED}FAIL${NC}: MIPS program failed."
+            echo -e "${RED}$(diff <(echo -e $s2) <(echo -e $2))${NC}" | sed -e 's/^/                /'
+        fi
     fi
     echo ""
 }
