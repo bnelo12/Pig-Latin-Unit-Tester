@@ -2,6 +2,7 @@
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+MAGENTA='\033[0;95m'
 NC='\033[0m'
 
 if [ $# -eq 0 ] || [ $# -gt 3 ]; then
@@ -33,9 +34,10 @@ USE_MARS=0
 if [ -f "$PATH_MARS" ] && [ -f "$PATH_CONVERT_PIG_LATIN_S" ]; then
     USE_MARS=1;
 else
-    echo -e "${RED}Could not find MARS or the piglatin assembler source. Running without testing MARS.${NC}\n"
+    echo -e "${RED}Could not find MARS or the piglatin assembler source. Running without testing MIPS code.${NC}\n"
 fi
 
+ALL_SUCCESS=1
 function check {
     echo -e "Testing Input: $1"
 
@@ -44,6 +46,7 @@ function check {
     then 
         echo -e "\t${GREEN}Success${NC}: C program passed."
     else
+        ALL_SUCCESS=0
         echo -e "\t${RED}FAIL${NC}: C program failed."
         echo -e "${RED}$(diff <(echo -e $s1) <(echo -e $2))${NC}" | sed -e 's/^/                /'
     fi
@@ -54,6 +57,7 @@ function check {
         then
             echo -e "\t${GREEN}Success${NC}: MIPS program passed."
         else
+            ALL_SUCCESS=0
             echo -e "\t${RED}FAIL${NC}: MIPS program failed."
             echo -e "${RED}$(diff <(echo -e $s2) <(echo -e $2))${NC}" | sed -e 's/^/                /'
         fi
@@ -79,3 +83,16 @@ check "hi mom this is a lot o wordsss lawwlll yu see what im talkin abuuut lolzt
 check "Jaguar F-TYPE, F-type, or f-type?" "Enter input: output: Aguarjay EF-TYPAY, Ef-typay, oray ef-typay?"
 
 rm convert_pig_latin
+
+echo ""
+echo -e "${MAGENTA}==============================================${NC}"
+if [ $USE_MARS -eq 0 ]; then
+    echo -e "${MAGENTA}Note${NC}: ${RED}You are only testing your C code!${NC}\n"
+fi
+if [ $ALL_SUCCESS -eq 1 ]; then
+    echo -e "${MAGENTA}Final result${NC}: ${GREEN}All tests ran successfully.${NC}"
+else
+    echo -e "${MAGENTA}Final result${NC}: Some tests ${RED}FAILED.${NC}"
+fi
+echo -e "${MAGENTA}==============================================${NC}"
+echo ""
